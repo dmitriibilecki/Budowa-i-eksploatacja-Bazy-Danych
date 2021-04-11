@@ -1,0 +1,30 @@
+Pokaї nazwiska i stanowiska pracownikуw
+select last_name as nazwiska, job_id as stanowsiko from employees
+Pokaї nazwy departamentуw i numery ich kierownikуw
+
+select first_name as Imię, last_name as Nazwisko, job_id as numer_pracownika , (salary*3+ nvl(commission_pct*3,0)) as pensja_kwartalnie from employees --zadanie 3 z pliku wstęp, bonus wyplata raz w roku a nie raz na kwartal
+
+
+
+/*1)Podaj nazwiska i stanowiska osуb z departamentu 50, ktуre zarabiaja wiкcej niї 3000 */
+select * from departments;
+select * from employees;
+select last_name as Nazwiska, department_id as department, salary as płaca from employees where  department_id= 50 and salary>3000 ;
+/*2)Kto nie jest urzкdnikiem (urzкdnik ma w id stanowiska sіowo CLERK w dowolnym miejscu) */
+select * from employees where job_id not like '%CLERK%' ;
+/*3) Kto byі zatrudniony w 1993 roku*/
+select * from employees where hire_date >'01-jan-1993' and hire_date <'01-jan-1994' ;
+/* 4) Kto byі zatrudniony po 1 stycznia 1993 */
+select * from employees where hire_date > '01-jan-1993';
+/*5 Pokaї dane pracownikуw z departamentu 10 i 90 */
+select * from employees where department_id = 90 or department_id = 10;
+/* 6) Pokaї osoby znajduj№ce siк na liњcie alfabetycznej przed Kingiem */
+select * from employees ORDER BY CASE WHEN last_name = 'King' THEN 0 ELSE 1 END ASC , last_name ASC;
+/*7) Kto nie pobiera prowizji? */
+select * from employees where nvl(commission_pct,0) = 0 ;
+/* 8) kto pobiera prowizjк? */
+select * from employees where nvl(commission_pct,0) > 0;
+/* 9) Kto ma nazwisko 4-literowe zacztynaj№ce siк na "K" */
+select * from employees where last_name like 'K___';
+/* 10) Kto zarabia wiкcej niї 5000 i mniej niї 10000 */
+select * from employees where salary >5000 and salary < 10000;
