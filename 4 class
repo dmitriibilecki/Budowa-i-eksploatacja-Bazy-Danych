@@ -1,0 +1,51 @@
+--/*1. Pokaż najwiкkszą, najmniejszą i średnią pensję przypadająca na jednego pracownika*/
+select max(salary), min(salary), avg(salary) from employees
+
+--/*2. Pokaż najwiкkszą, najmniejszą i średnią pensję wypіacaną na  
+poszczegуlnych stanowiskach pracy.*/
+select max(salary), min(salary), avg(salary), job_id from employees group by job_id
+
+--/*3. Pokaї najwiкkszą, najmniejszą i średnią pensję przypadającą
+na jednego pracownika w departamencie 50.*/
+select max(salary), min(salary), avg(salary) from employees where DEPARTMENT_ID= '50'
+
+--/*4. Ile osуb pracuje na poszczegуlnych stanowiskach?*/
+select count(job_id),job_id from employees group by job_id
+
+--/*5. Ilu szefów pracuje w tej firmie, tzn. osób, które mają podwładnych.
+Analizuj kolumnę MANAGER_ID.*/
+select first_name, last_name, manager_id, count(manager_id) as ile_podwladnych from employees group by manager_id having
+select count(distinct manager_id) from employees
+
+--/*6. Ile wynoszą pensje osób, które najgorzej  zarabiają u
+każdego z szefów?*/
+select distinct manager_id, min(salary) from employees group by manager_id
+
+--/*7. Ile wynoszą pensje osób, ktуre najgorzej  zarabiają u
+kaїdego z szefуw? Nie pokazuj szefa z nieokreњlonym numerem.*/
+select distinct manager_id, min(salary) from employees group by manager_id having manager_id >100
+
+--/*8. Ile wynoszi pensje osób, które najgorzej  zarabiają u
+każdego z szefów? Nie pokazuj szefa z nieokreњlonym numerem.
+Szukam jedynie tych osób, ktуrych pensja nie przekracza 10000.*/
+select distinct manager_id, min(salary) from employees where salary <= 10000 group by manager_id having manager_id is not null order by min(salary)
+
+--/*9. Jak jest różnica między najwiкkszą i najmniejszą pensją?*/
+select max(salary)-min(salary) as różnica from employees
+select max(salary) from employees
+select min(salary) from employees
+
+--/*10. W których departamentach średnia pensja jest wiкksza niї 10000?
+Pokaż tylko te departamenty, gdzie pracują wiкcej niż 2 osoby.*/
+select round(avg(salary)), department_id from employees group by department_id having count(DEPARTMENT_ID)>2 and avg(salary)>10000
+
+--/*11. Od kiedy pracują osoby z najdłuższym stażem w poszczegуlnych departamentach?*/
+select min(hire_date) as najwieszky_staz, department_id from employees group by hire_date, department_id order by hire_date
+
+
+--/*12. Pokaż najwyższe pensje menedżerów (koсcуwka MAN w job_id) w
+poszegуlnych departamentach. Wyniki posortuj zaczynaj№c od najwyїsej pensji*/
+select department_id , max(salary) from employees where substr(job_id,4,3)= 'MAN' group by department_id
+
+--/*13. Ile osób zatrudniono w poszczegуlnych latach: 1994, 1995, 1996 */
+select count(hire_date), to_char(hire_date,'yyyy') from employees group by to_char(hire_date,'yyyy') having to_char(hire_date,'yyyy') >1993 and to_char(hire_date,'yyyy') <1997 order by to_char(hire_date,'yyyy')
