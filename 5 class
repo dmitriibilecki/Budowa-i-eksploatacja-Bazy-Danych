@@ -1,0 +1,56 @@
+--/* 1.Pokaż nazwiska, daty zatrudnienia pracowników, którzy pracują w tym samym departamentcie co Zlotkey.*/
+select last_name, hire_date
+from employees
+where DEPARTMENT_ID=(select DEPARTMENT_ID
+from employees
+where last_name='Zlotkey')
+and last_name<>'Zlotkey'
+
+
+--/*Kto z ww pracuje dłużej od Zlotkey, ale mniej zarabia?*/
+SELECT  first_name, last_name
+FROM EMPLOYEES
+WHERE hire_date <  (SELECT hire_date FROM employees WHERE last_name = 'Zlotkey') and salary >  (SELECT salary FROM employees WHERE last_name = 'Zlotkey')  ;
+
+
+
+--/*3. Którzy pracownicy zarabiają powyżej średniej?*/
+SELECT employee_id, last_name
+FROM employees
+WHERE salary > (SELECT AVG(salary)
+FROM employees);
+
+
+--/*4.Kto pracuje w jednym departamencie z prezesem (PRES w kodzie stanowiska)? or Executive?????? */
+SELECT department_id, last_name, job_id
+    FROM employees
+    WHERE department_id IN (SELECT department_id
+                FROM departments
+                WHERE department_name = 'Executive');
+
+--/*5 Kto pracuje w lokalizacji 1700 - 2 sposoby rozwiązania*/
+SELECT last_name, department_id, job_id
+FROM employees
+WHERE department_id IN (SELECT department_id
+FROM departments
+WHERE location_id = 1700);
+
+--/*6 Kto raportuje do Kinga?*/
+SELECT last_name, salary
+FROM employees
+WHERE manager_id = (SELECT employee_id
+FROM employees
+WHERE last_name = 'King');
+
+
+--/*8 Czy ktoњ zarabia wiкcej od ktуregokolwiek menedїera?*/
+SELECT *
+FROM employees w,
+     employees m
+WHERE w.manager_id = m.EMPLOYEE_ID
+  AND w.salary> m.salary;
+
+--/*9. Kto z departamentu 90 byі zatrudniony przed osobami    pracuj№cymi obecnie w departmencie 80?*/
+SELECT  *
+FROM EMPLOYEES
+WHERE department_id in (80,90) and hire_date < ( select min(hire_date) from employees where department_id=80)
